@@ -45,7 +45,17 @@
 [[inputs.<%= input %>]]
 <%      unless options == nil -%>
 <%          options.sort.each do | option, value | -%>
+<%              if !value.is_a?(Hash) -%>
   <%= option -%> = <% if value.is_a?(String) %>"<%= value %>"<% elsif value.is_a?(Array) %><%= value.inspect %><% else %><%= value %><% end %>
+<%               end -%>
+<%          end -%>
+<%          options.sort.each do | option, value | -%>
+<%              if value.is_a?(Hash) -%>
+  [inputs.<%= input %>.<%= option %>]
+<%                  value.sort.each do | sub_option, sub_value | -%>
+  "<%= sub_option -%>" = <% if sub_value.is_a?(String) %>"<%= sub_value %>"<% elsif sub_value.is_a?(Array) %><%= sub_value.inspect %><% else %><%= sub_value %><% end %>
+<%                  end -%>
+<%               end -%>
 <%          end -%>
 <%      end -%>
 <%   end -%>
